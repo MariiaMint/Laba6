@@ -1,6 +1,8 @@
 package generalModule.beginningClasses;
 
-public enum Mood {
+import java.io.Serializable;
+
+public enum Mood implements Serializable {
     SADNESS,
     SORROW,
     APATHY;

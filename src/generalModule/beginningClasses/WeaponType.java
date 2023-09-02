@@ -1,6 +1,8 @@
 package generalModule.beginningClasses;
 
-public enum WeaponType {
+import java.io.Serializable;
+
+public enum WeaponType implements Serializable {
     HAMMER,
     AXE,
     PISTOL,

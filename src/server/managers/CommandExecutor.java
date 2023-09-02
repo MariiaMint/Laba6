@@ -12,12 +12,14 @@ import generalModule.tools.HumanComparator;
 import static generalModule.beginningClasses.HumanBeing.*;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 import static server.managers.CommandManager.execute;
 import static generalModule.tools.FileScanner.scan;
 import static generalModule.tools.Validator.*;
 import static generalModule.tools.Validator.etoDouble;
-import static server.managers.serverTools.ResponseSender.send;
+import static server.managers.serverTools.ResponseSenderServer.send;
+import static server.managers.serverTools.ResponseSenderServer.sendHuman;
 
 public class CommandExecutor {
 
@@ -86,10 +88,12 @@ public class CommandExecutor {
 
     //SHOW
     public void show() {
-        send("id; name; coordinates; creationDate; realHero; hasToothpick; impactSpeed; weaponType; mood; carName; carCool");
+        StringBuilder response = new StringBuilder();
+        response.append("id; name; coordinates; creationDate; realHero; hasToothpick; impactSpeed; weaponType; mood; carName; carCool\n");
         for (HumanBeing obj : collection) {
-            send(obj.toString());
+            response.append(obj.toString()+ "\n");
         }
+        send(response.toString());
     }
 
     //remove_first
@@ -161,10 +165,9 @@ public class CommandExecutor {
 
     //removeBId id
     public void removeBId(String strId) {
-        int id = id(strId, scanner);
         boolean removed = false;
         for (HumanBeing obj : collection) {
-            if (obj.getId() == id) {
+            if (obj.getId() == parseInt(strId)) {
                 collection.removeElement(obj);
                 removed = true;
                 break;
@@ -179,11 +182,12 @@ public class CommandExecutor {
 
     //update id
     public void update(String strId) {
-        int id = id(strId, scanner);
         boolean here = false;
         for (HumanBeing person : collection) {
-            if (person.getId() == id) {
+            if (person.getId() == parseInt(strId)) {
+                sendHuman(person);
                 here = true;
+            }
                 List<String> pars = Arrays.asList("name", "coordinates", "realHero", "hasToothpick", "impactSpeed", "weaponType", "mood", "car");
                 String par = "";
                 while (!par.equals("stop")) {
@@ -223,7 +227,6 @@ public class CommandExecutor {
                     }
                 }
             }
-        }
         if (!here) {
             send("Человека с таким id нет");
         }

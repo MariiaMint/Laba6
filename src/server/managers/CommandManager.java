@@ -1,12 +1,12 @@
 package server.managers;
 
+import generalModule.beginningClasses.HumanBeing;
 import server.comands.*;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-import static client.Printer.print;
-import static server.managers.serverTools.ResponseSender.send;
+import static server.managers.serverTools.ResponseSenderServer.send;
 
 public class CommandManager {
     private static LinkedHashMap<String, Command> commands;
@@ -30,9 +30,14 @@ public class CommandManager {
         commands.put("execute_script", new ExecuteScriptCommand(executor,"считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме","execute_script"));
         commands.put("sort", new SortCommand(executor,"отсортировать коллекцию в естественном порядке","sort"));
     }
-    public static void execute(String name, String par){
+    public static void execute(String name, Object par){
         try {
-            commands.get(name).execute(par);
+            if (par instanceof String) {
+                commands.get(name).execute((String) par);
+            }
+            else if (par instanceof HumanBeing){
+                commands.get(name).execute((HumanBeing) par);
+            }
         } catch (IOException | NullPointerException e) {
             send("Данная команда не найдена");
         }

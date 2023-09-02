@@ -1,6 +1,8 @@
 package generalModule.beginningClasses;
 
-public class Coordinates {
+import java.io.Serializable;
+
+public class Coordinates implements Serializable {
     private Double x; //Значение поля должно быть больше -386, Поле не может быть null
     private double y;
 

@@ -1,8 +1,6 @@
 package server.comands;
 import server.managers.CommandExecutor;
 
-import static server.managers.serverTools.ResponseSender.send;
-
 public class AddIfMaxCommand implements Command{
     CommandExecutor commandExecutor;
     String description;

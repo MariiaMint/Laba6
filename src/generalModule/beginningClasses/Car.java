@@ -1,6 +1,8 @@
 package generalModule.beginningClasses;
 
-public class Car {
+import java.io.Serializable;
+
+public class Car implements Serializable {
     private String name; //Поле может быть null
     private boolean cool;
 

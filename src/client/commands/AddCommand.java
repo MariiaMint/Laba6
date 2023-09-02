@@ -1,9 +1,6 @@
 package client.commands;
 
 import client.CommandExecutorClient;
-import server.managers.CommandExecutor;
-
-import java.util.Vector;
 
 public class AddCommand implements Command{
     String name;

@@ -16,11 +16,12 @@ public class ClientConnect {
     public static void connect() {
         try {
             serverAddress = InetAddress.getByName("localhost");
-            serverPort = 9000;
+            serverPort = 9991;
             clientSocket = new Socket(serverAddress, serverPort);
             print("Connection accepted");
         } catch (IOException e) {
             System.out.println("Не удалось установить соединение с сервером");
+            throw new RuntimeException();
         }
     }
 

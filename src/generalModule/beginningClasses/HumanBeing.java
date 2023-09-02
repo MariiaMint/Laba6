@@ -1,5 +1,6 @@
 package generalModule.beginningClasses;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -8,7 +9,7 @@ import static java.lang.Math.max;
 import static client.Printer.print;
 import static generalModule.tools.Validator.*;
 
-public class HumanBeing implements Comparable<HumanBeing>{
+public class HumanBeing implements Serializable, Comparable<HumanBeing>{
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -181,7 +182,7 @@ public class HumanBeing implements Comparable<HumanBeing>{
                 mood + "; " +
                 car.toString() + "\n";}
 
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyyг HHч.mmмин.sс");
+    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyyг HHч.mmмин.sс");
     public String creationDateToString() {
         return creationDate.format(dateTimeFormatter);
     }

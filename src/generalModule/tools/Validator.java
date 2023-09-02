@@ -7,6 +7,7 @@ import java.util.*;
 
 import static java.lang.Integer.parseInt;
 import static client.Printer.print;
+import static java.lang.Integer.valueOf;
 
 public class Validator {
     public static String notEmptyString(Scanner scanner){
@@ -93,7 +94,7 @@ public class Validator {
         return mood;
     }
 
-    public static int id(String strId, Scanner scanner){
+    public static String id(String strId, Scanner scanner){
         int id;
         while(true) {
             if (strId.isBlank()) {
@@ -109,6 +110,6 @@ public class Validator {
                 }
             }
         }
-        return id;
+        return strId;
     }
 }

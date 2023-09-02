@@ -1,22 +1,37 @@
 package client;
 
-import java.io.DataOutputStream;
+import generalModule.MessWithArg;
+import generalModule.MessWithHuman;
+import generalModule.Message;
+import generalModule.beginningClasses.HumanBeing;
+
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import static client.ClientConnect.clientSocket;
 import static client.Printer.print;
 
-public class ResponseSender {
-    public static void send(String response) {
+public class ResponseSenderClient {
+    public static void send(Object obj) {
         try {
-            DataOutputStream oos = new DataOutputStream(clientSocket.getOutputStream());
-            oos.writeUTF(response);
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+            oos.writeObject(obj);
             oos.flush();
-            //oos.close();
-            print("command was sent");
         } catch (IOException e) {
-            print("ioex responseSender");
+//            print("сервер не доступен");
         }
+    }
+    public static void sendMessage(String command){
+        Message message = new Message(command);
+        send(message);
+    }
+    public static void sendMessWithArg(String command, String argument){
+        MessWithArg message = new MessWithArg(command, argument);
+        send(message);
+    }
+    public static void sendMessWithHuman(String command, HumanBeing human){
+        MessWithHuman message = new MessWithHuman(command, human);
+        send(message);
     }
 }
 //        try {

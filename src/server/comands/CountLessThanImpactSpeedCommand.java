@@ -2,8 +2,6 @@ package server.comands;
 
 import server.managers.CommandExecutor;
 
-import static server.managers.serverTools.ResponseSender.send;
-
 public class CountLessThanImpactSpeedCommand implements Command{
         CommandExecutor commandExecutor;
         String description;

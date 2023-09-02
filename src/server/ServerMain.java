@@ -1,21 +1,22 @@
 package server;
 
-import client.ClientConnect;
+import generalModule.MessWithArg;
+import generalModule.MessWithHuman;
+import generalModule.Message;
 import generalModule.beginningClasses.HumanBeing;
 import generalModule.tools.CsvToVector;
 import server.managers.CommandExecutor;
 import server.managers.CommandManager;
-import server.managers.serverTools.RequestReader;
+import server.managers.serverTools.RequestReaderServer;
 import server.managers.serverTools.ServerConnect;
 
 import java.io.IOException;
-import java.net.Socket;
+import java.net.SocketException;
 import java.util.Vector;
 
 import static client.Inputer.scanner;
 import static client.Printer.print;
-import static server.managers.serverTools.ServerConnect.close;
-import static server.managers.serverTools.ServerConnect.connect;
+import static server.managers.serverTools.ServerConnect.*;
 
 public class ServerMain {
     public static void main(String[] args) throws IOException {
@@ -32,21 +33,39 @@ public class ServerMain {
 
         //парсер csv в Vector
         CsvToVector.csvToVector(csvFile, collection, scanner);
+
+
         CommandExecutor commandExecutor = new CommandExecutor(collection, csvFile, scanner);
         CommandManager commandManager = new CommandManager(commandExecutor);
         connect();
-        while (true) {
-            String recievedCommand = RequestReader.read();
-            String[] command_list;
 
-            if (recievedCommand != null) {
-                command_list = recievedCommand.split(" ");
-                if (command_list.length == 1) {
-                    commandManager.execute(command_list[0], "");
-                } else if (command_list.length == 2) {
-                    commandManager.execute(command_list[0], command_list[1]);
+
+        while (true) {
+            socket = ServerConnect.serverSocket.accept();
+            print("Connection accepted");
+
+            try {
+                Message recievedCommand = RequestReaderServer.read();
+                String argument = null;
+                HumanBeing human = null;
+
+                if (recievedCommand != null) {
+                    String commandName = recievedCommand.getMessageName();
+                    if (recievedCommand instanceof MessWithArg) {
+                        argument = ((MessWithArg) recievedCommand).getArg();
+                    }
+                    if (recievedCommand instanceof MessWithHuman) {
+                        human = ((MessWithHuman) recievedCommand).getHuman();
+                    }
+                    if (argument == null && human == null) {
+                        commandManager.execute(commandName, "");
+                    } else if (argument != null) {
+                        commandManager.execute(commandName, argument);
+                    } else {
+                        commandManager.execute(commandName, human);
+                    }
                 }
-            }
+            }finally {close();print("клиент отключился");}
         }
     }
 }
